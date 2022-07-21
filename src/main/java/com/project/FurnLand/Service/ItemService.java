@@ -40,7 +40,7 @@ public class ItemService {
     // Create a new Item
     public ResponseEntity<?> createItem(Item item, URI location){
         Item item1 = itemRepository.save(item);
-        ResponseEntity<?> response = ResponseEntity.created(location).body(new ApiResponse(true,"Item Created successfully "));
+        ResponseEntity<?> response = ResponseEntity.created(location).body(new ApiResponse(true,"Item Created successfully ",item1.getId(),"Item"));
         return response;
 
     }
@@ -63,7 +63,7 @@ public class ItemService {
      item1.setItemPrice(item.getItemPrice());
 
      itemRepository.save(item1);
-     ResponseEntity response = ResponseEntity.ok(new ApiResponse(true,"Item updated"));
+     ResponseEntity response = ResponseEntity.ok(new ApiResponse(true,"Item updated",item1.getId(),"Item"));
      return response;
     }
 
@@ -82,7 +82,7 @@ public class ItemService {
        catch (BadRequestException ex){
             ex.getCause();
        }
-        ResponseEntity response = ResponseEntity.ok(new ApiResponse(true,"Item Deleted"));
+        ResponseEntity response = ResponseEntity.ok(new ApiResponse(true,"Item Deleted",item.getId(),"Item,"));
         return response;
     }
 
