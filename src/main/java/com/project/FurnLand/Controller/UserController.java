@@ -1,15 +1,17 @@
 package com.project.FurnLand.Controller;
 
+import com.project.FurnLand.DTO.Requests.AddressRequest;
+import com.project.FurnLand.Entity.Address;
 import com.project.FurnLand.Entity.User;
 import com.project.FurnLand.Repository.UserRepository;
+import com.project.FurnLand.Security.CurrentUser;
+import com.project.FurnLand.Security.UserPrincipal;
 import com.project.FurnLand.Service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +24,9 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ModelMapper modelMapper;
+
 
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -33,6 +38,28 @@ public class UserController {
 
 
     }
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping(path = "/currentUser/newAddress")
+    public ResponseEntity<?> createAddress(@CurrentUser UserPrincipal currentUser,@RequestBody AddressRequest addressRequest){
+        Long userId = currentUser.getId();
+        Address address = modelMapper.map(addressRequest, Address.class);
+        address.setUserId(userId);
+        return userService.createAddress(address);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(path = "/currentUser/addressbook")
+    public ResponseEntity<? > getUserAddresses(@CurrentUser UserPrincipal currentUser){
+        Long userId = currentUser.getId();
+        return userService.getUserAddresses(userId);
+    }
+
+//    @PreAuthorize("hasRole('USER')")
+//    @DeleteMapping(path = "/currentUser/deleteAddress/{id}")
+//    public ResponseEntity<?> deleteAddress(@CurrentUser UserPrincipal currentUser,@PathVariable Long id){
+//        Long userId = currentUser.getId();
+//        return userService.deleteUserAddress(id,userId);
+//    }
 
 
 }

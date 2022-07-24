@@ -52,6 +52,17 @@ public class User {
     }
 
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private Set<Address> address;
+
+    public Set<Address> getAddress() {
+        return address;
+    }
+
+    public void setAddress(Set<Address> address) {
+        this.address = address;
+    }
+
     public User() {
     }
 
