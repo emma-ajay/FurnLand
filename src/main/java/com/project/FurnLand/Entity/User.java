@@ -63,6 +63,20 @@ public class User {
         this.address = address;
     }
 
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "UserCart",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "cartId"))
+    private  Set<Cart> cart = new HashSet<>();
+
+    public Set<Cart> getCarts() {
+        return cart;
+    }
+
+    public void setCarts(Set<Cart> cart) {
+        this.cart = cart;
+    }
     public User() {
     }
 

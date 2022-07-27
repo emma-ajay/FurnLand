@@ -3,6 +3,10 @@ package com.project.FurnLand.Controller;
 import com.project.FurnLand.DTO.Requests.ItemCreationRequest;
 import com.project.FurnLand.DTO.Requests.ItemUpdateRequest;
 import com.project.FurnLand.Entity.Item;
+import com.project.FurnLand.Entity.SelectedItem;
+import com.project.FurnLand.Entity.UserCart;
+import com.project.FurnLand.Repository.SelectedItemRepository;
+import com.project.FurnLand.Repository.UserCartRepository;
 import com.project.FurnLand.Security.CurrentUser;
 import com.project.FurnLand.Security.UserPrincipal;
 import com.project.FurnLand.Service.ItemService;
@@ -27,13 +31,19 @@ public class ItemController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    SelectedItemRepository selectedItemRepository;
+
+    @Autowired
+    UserCartRepository userCartRepository;
+
     @GetMapping(path = "/items")
     public List <Item> getAllItems(){
         return itemService.getAllItems();
     }
 
     @GetMapping(path = "/items/{id}")
-        public Optional<Item> getItemById(@PathVariable Long id) {
+        public Item getItemById(@PathVariable Long id) {
         return itemService.getItemById(id);
     }
 
@@ -73,6 +83,23 @@ public class ItemController {
         ResponseEntity response = itemService.deleteItemById(id,userId);
         return response;
     }
+
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping (path = "/itemSelect/{id}")
+    public SelectedItem selectItem(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long id){
+        Item item1 = getItemById(id);
+        UserCart userCart = userCartRepository.selectUserCart(userPrincipal.getId());
+        Long cartId = userCart.getCartId();
+        SelectedItem selectedItem = modelMapper.map(item1,SelectedItem.class);
+        selectedItem.setUserId(userPrincipal.getId());
+        selectedItem.setCartId(cartId);
+        selectedItem.setCount(1L);
+
+       selectedItemRepository.save(selectedItem);
+        return selectedItem;
+    }
+
+
 
 }
 

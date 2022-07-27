@@ -25,8 +25,8 @@ public class ItemService {
     }
 
     //get a particular Item
-    public Optional <Item> getItemById(Long id){
-        return itemRepository.findById(id);
+    public Item getItemById(Long id){
+        return itemRepository.findItemById(id);
     }
 
     // get all items by a vendor

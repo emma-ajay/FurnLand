@@ -12,4 +12,7 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository <Item,Long > {
     @Query("SELECT u FROM Item u where u.vendorId = ?1")
     List<Item> itemsByVendor(Long userID);
+
+    @Query("SELECT u FROM Item u WHERE u.id =?1")
+    Item findItemById (Long id);
 }

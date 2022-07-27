@@ -2,15 +2,20 @@ package com.project.FurnLand.Service;
 
 import com.project.FurnLand.DTO.Response.ApiResponse;
 import com.project.FurnLand.Entity.Address;
+import com.project.FurnLand.Entity.Cart;
 import com.project.FurnLand.Entity.User;
+import com.project.FurnLand.Entity.UserCart;
 import com.project.FurnLand.Exceptions.BadRequestException;
 import com.project.FurnLand.Repository.AddressRepository;
+import com.project.FurnLand.Repository.CartRepository;
+import com.project.FurnLand.Repository.UserCartRepository;
 import com.project.FurnLand.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -20,6 +25,13 @@ public class UserService {
 
     @Autowired
     AddressRepository addressRepository;
+
+    @Autowired
+    UserCartRepository userCartRepository;
+
+    @Autowired
+    CartRepository cartRepository;
+
 
     public ResponseEntity<?> getAllUserByRoleId(Long id){
         List<User> users = userRepository.getUserByRole(id);
@@ -53,6 +65,20 @@ public class UserService {
             ex.getMessage();
         }
         return ResponseEntity.ok("address deleted");
+    }
+
+
+    // get users cart
+
+    public  Optional<Cart> getUsersCart( Long userId ){
+        UserCart userCart = userCartRepository.selectUserCart(userId);
+        Long cartId = userCart.getCartId();
+        Optional<Cart> cart = cartRepository.findById(cartId);
+
+       // ResponseEntity<?> response = ResponseEntity.ok(cart);
+
+        return  cart;
+
     }
 
 }
