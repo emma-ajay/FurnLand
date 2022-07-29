@@ -9,7 +9,7 @@ public class SelectedItem {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
-    private Long Id;
+    private Long SelectedItemId;
 
     private Long userId;
 
@@ -54,8 +54,8 @@ public class SelectedItem {
         this.cartId= cartId;
     }
 
-    public SelectedItem(Long id, Long userId, Long vendorId, String itemName, String itemType, String itemCategory, String itemPrice, String itemDescription, String imageUrl, String deliveryEstimation, Long count,Long cartId) {
-        Id = id;
+    public SelectedItem(Long selectedItemId, Long userId, Long vendorId, String itemName, String itemType, String itemCategory, String itemPrice, String itemDescription, String imageUrl, String deliveryEstimation, Long count,Long cartId) {
+        SelectedItemId = selectedItemId;
         this.userId = userId;
         this.vendorId = vendorId;
         this.itemName = itemName;
@@ -69,8 +69,8 @@ public class SelectedItem {
         this.cartId= cartId;
     }
 
-    public Long getId() {
-        return Id;
+    public Long getSelectedItemId() {
+        return SelectedItemId;
     }
 
     public Long getUserId() {
@@ -81,8 +81,8 @@ public class SelectedItem {
         this.userId = userId;
     }
 
-    public void setId(Long id) {
-        Id = id;
+    public void setSelectedItemId(Long selectedItemId) {
+        SelectedItemId = selectedItemId;
     }
 
     public Long getVendorId() {

@@ -35,12 +35,7 @@ public class Item {
     @JoinColumn(name = "vendorId", nullable=false,insertable = false,updatable = false)
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },mappedBy = "ordered")
-    private List<Order> orders = new ArrayList<>();
+
 
     public Item() {
     }

@@ -64,7 +64,7 @@ public class UserController {
 //    @PreAuthorize("hasRole('USER')")
 //    @DeleteMapping(path = "/currentUser/deleteAddress/{id}")
 //    public ResponseEntity<?> deleteAddress(@CurrentUser UserPrincipal currentUser,@PathVariable Long id){
-//        Long userId = currentUser.getId();
+//        Long userId = currentUser.getSelectedItemId();
 //        return userService.deleteUserAddress(id,userId);
 //    }
 
