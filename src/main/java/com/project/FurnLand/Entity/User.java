@@ -77,6 +77,19 @@ public class User {
     public void setCarts(Set<Cart> cart) {
         this.cart = cart;
     }
+
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Order> order;
+
+    public Set<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(Set<Order> order) {
+        this.order = order;
+    }
+
     public User() {
     }
 

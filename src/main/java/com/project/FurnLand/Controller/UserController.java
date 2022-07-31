@@ -6,6 +6,7 @@ import com.project.FurnLand.Entity.Cart;
 import com.project.FurnLand.Entity.User;
 import com.project.FurnLand.Entity.UserCart;
 import com.project.FurnLand.Repository.CartRepository;
+import com.project.FurnLand.Repository.OrderedItemRepository;
 import com.project.FurnLand.Repository.UserRepository;
 import com.project.FurnLand.Security.CurrentUser;
 import com.project.FurnLand.Security.UserPrincipal;
@@ -76,6 +77,8 @@ public class UserController {
         return  userService.getUsersCart(userId);
 
     }
+
+
 
 
 

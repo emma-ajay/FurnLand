@@ -6,10 +6,7 @@ import com.project.FurnLand.Entity.Cart;
 import com.project.FurnLand.Entity.User;
 import com.project.FurnLand.Entity.UserCart;
 import com.project.FurnLand.Exceptions.BadRequestException;
-import com.project.FurnLand.Repository.AddressRepository;
-import com.project.FurnLand.Repository.CartRepository;
-import com.project.FurnLand.Repository.UserCartRepository;
-import com.project.FurnLand.Repository.UserRepository;
+import com.project.FurnLand.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,6 +28,9 @@ public class UserService {
 
     @Autowired
     CartRepository cartRepository;
+
+    @Autowired
+    OrderedItemRepository orderedItemRepository;
 
 
     public ResponseEntity<?> getAllUserByRoleId(Long id){
@@ -80,5 +80,8 @@ public class UserService {
         return  cart;
 
     }
+
+
+    // Get vendors Ordered Items
 
 }
