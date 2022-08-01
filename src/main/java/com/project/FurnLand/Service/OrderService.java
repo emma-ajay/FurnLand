@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.Access;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -93,5 +94,13 @@ public class OrderService {
     public ResponseEntity<?> myOrders(Long userId){
         List<Order> orders = orderRepository.getUsersOrders(userId);
         return ResponseEntity.ok(orders);
+    }
+
+    public OrderedItem getOrderedItemById(Long id) {
+        OrderedItem orderedItem = orderedItemRepository.findOrderedItemById(id);
+        if(orderedItem == null){
+            throw new BadRequestException("Ordered Item doesn't exist");
+        }
+        return  orderedItem;
     }
 }

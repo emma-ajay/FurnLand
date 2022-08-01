@@ -1,20 +1,19 @@
 package com.project.FurnLand.Controller;
 
 import com.project.FurnLand.DTO.Requests.AddressRequest;
-import com.project.FurnLand.Entity.Address;
-import com.project.FurnLand.Entity.Cart;
-import com.project.FurnLand.Entity.User;
-import com.project.FurnLand.Entity.UserCart;
+import com.project.FurnLand.Entity.*;
 import com.project.FurnLand.Repository.CartRepository;
 import com.project.FurnLand.Repository.OrderedItemRepository;
 import com.project.FurnLand.Repository.UserRepository;
 import com.project.FurnLand.Security.CurrentUser;
 import com.project.FurnLand.Security.UserPrincipal;
+import com.project.FurnLand.Service.OrderService;
 import com.project.FurnLand.Service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +33,9 @@ public class UserController {
 
     @Autowired
     CartRepository cartRepository;
+
+    @Autowired
+    OrderService orderService;
 
 
 
@@ -71,12 +73,25 @@ public class UserController {
 
 
     @PreAuthorize("hasRole('USER')")
-    @GetMapping(path = "/currentUser/myCart")
+    @GetMapping(path = "/cart")
     public Optional<Cart> getUserCart(@CurrentUser UserPrincipal currentUser){
         Long userId = currentUser.getId();
         return  userService.getUsersCart(userId);
 
     }
+
+    @PreAuthorize("hasRole('VENDOR')")
+    @GetMapping(path = "/myOrders")
+    public  ResponseEntity<?> getAllVendorOrders(@CurrentUser UserPrincipal currentUser){
+        Long userId = currentUser.getId();
+        return  userService.vendorsOrders(userId);
+    }
+
+
+
+
+
+
 
 
 

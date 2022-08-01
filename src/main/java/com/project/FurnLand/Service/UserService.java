@@ -1,15 +1,13 @@
 package com.project.FurnLand.Service;
 
 import com.project.FurnLand.DTO.Response.ApiResponse;
-import com.project.FurnLand.Entity.Address;
-import com.project.FurnLand.Entity.Cart;
-import com.project.FurnLand.Entity.User;
-import com.project.FurnLand.Entity.UserCart;
+import com.project.FurnLand.Entity.*;
 import com.project.FurnLand.Exceptions.BadRequestException;
 import com.project.FurnLand.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -83,5 +81,60 @@ public class UserService {
 
 
     // Get vendors Ordered Items
+    public ResponseEntity<?> vendorsOrders(Long userId){
+        List <OrderedItem> orderedItemList = orderedItemRepository.getAllVendorOrders(userId);
+        return ResponseEntity.ok(orderedItemList);
 
+    }
+
+    // update an ordered item to confirmed
+
+    @Transactional
+    public  ResponseEntity <?> updateHasBeenConfirmed(Long userId , Long orderedItemId ){
+
+        OrderedItem orderedItem = orderedItemRepository.findById(orderedItemId).orElseThrow(()-> new IllegalStateException("Item wasn't ordered"));
+        Long vendorId = orderedItem.getVendorId();
+
+        if(userId != vendorId){
+            throw  new BadRequestException("Illegal ");
+        }
+
+        orderedItemRepository.confirmOrderedItem(orderedItemId);
+        return ResponseEntity.ok(new ApiResponse(true,"ordered Item confirmed ",orderedItemId,"Ordered Item"));
+
+    }
+
+    // update an ordered item to sent
+
+    @Transactional
+    public  ResponseEntity <?> updateHasBeenSent(Long userId , Long orderedItemId ){
+
+        OrderedItem orderedItem = orderedItemRepository.findById(orderedItemId).orElseThrow(()-> new IllegalStateException("Item wasn't ordered"));
+        Long vendorId = orderedItem.getVendorId();
+
+        if(userId != vendorId){
+            throw  new BadRequestException("Illegal ");
+        }
+
+        orderedItemRepository.confirmSentOrderedItem(orderedItemId);
+        return ResponseEntity.ok(new ApiResponse(true,"ordered Item sent ",orderedItemId,"Ordered Item"));
+
+    }
+
+    // update an ordered item to delivered
+
+    @Transactional
+    public  ResponseEntity <?> updateHasBeenDelivered(Long userId , Long orderedItemId ){
+
+        OrderedItem orderedItem = orderedItemRepository.findById(orderedItemId).orElseThrow(()-> new IllegalStateException("Item wasn't ordered"));
+        Long userId1 = orderedItem.getUserId();
+
+        if(userId != userId1){
+            throw  new BadRequestException("Illegal ");
+        }
+
+        orderedItemRepository.confirmDeliveredOrderedItem(orderedItemId);
+        return ResponseEntity.ok(new ApiResponse(true,"ordered Item delivered ",orderedItemId,"Ordered Item"));
+
+    }
 }
