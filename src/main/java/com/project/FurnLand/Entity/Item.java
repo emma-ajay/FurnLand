@@ -9,7 +9,8 @@ import java.util.List;
 public class Item {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.IDENTITY
+            strategy = GenerationType.SEQUENCE,
+            generator = "ItemGen"
     )
     @Column(name ="itemId")
     private Long id;

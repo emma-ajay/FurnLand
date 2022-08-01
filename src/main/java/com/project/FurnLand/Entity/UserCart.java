@@ -8,7 +8,7 @@ public class UserCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "userCartId"
+            generator = "cart_userGen"
     )
     private  Long id ;
 
