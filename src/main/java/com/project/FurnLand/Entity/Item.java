@@ -10,7 +10,7 @@ public class Item {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "ItemGen"
+            generator = "ItemGen "
     )
     @Column(name ="itemId")
     private Long id;
