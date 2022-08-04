@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +80,22 @@ public class UserController {
         return  userService.getUsersCart(userId);
 
     }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER', 'ROLE_VENDOR')")
+    @GetMapping(path = "/profile")
+    public List<String> getUserProfile(@CurrentUser UserPrincipal currentUser){
+        Long userId = currentUser.getId();
+        String username = currentUser.getName();
+        String email = currentUser.getEmail();
+        List<String> profile = new ArrayList<>();
+        profile.add(email);
+        profile.add(username);
+        
+        return profile;
+    }
+        
+    
+    // get profile 
+    
 
     @PreAuthorize("hasRole('VENDOR')")
     @GetMapping(path = "/myOrders")
