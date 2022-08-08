@@ -15,4 +15,7 @@ public interface ItemRepository extends JpaRepository <Item,Long > {
 
     @Query("SELECT u FROM Item u WHERE u.id =?1")
     Item findItemById (Long id);
+
+    @Query("SELECT u FROM Item u WHERE CONCAT(u.itemName, u.itemType, u.itemCategory, u.itemPrice) LIKE %?1%")
+    List<Item> search(String keyword);
 }

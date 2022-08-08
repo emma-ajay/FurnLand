@@ -86,5 +86,9 @@ public class ItemService {
         return response;
     }
 
+    public List<Item> searchItems(String keyword){
+        return itemRepository.search(keyword);
+    }
+
 
 }

@@ -42,6 +42,12 @@ public class ItemController {
         return itemService.getAllItems();
     }
 
+    @GetMapping(path = "/search/{keyword}")
+    public List <Item> searchItems(@PathVariable String keyword){
+        return itemService.searchItems(keyword);
+    }
+
+
     @GetMapping(path = "/items/{id}")
         public Item getItemById(@PathVariable Long id) {
         return itemService.getItemById(id);
