@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     @Query("SELECT u FROM User u WHERE u.email = ?1 ")
-    Boolean existsByEmail(String email);
+     User ByEmail(String email);
 
     @Query("SELECT u FROM User u  INNER JOIN  Role r ON r.id =?1 ")
     List<User> getUserByRole(Long id);

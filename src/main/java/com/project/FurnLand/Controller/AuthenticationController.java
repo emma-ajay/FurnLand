@@ -13,7 +13,6 @@ import com.project.FurnLand.Repository.UserRepository;
 import com.project.FurnLand.Security.JwtTokenProvider;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.Collections;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -78,7 +78,12 @@ public class AuthenticationController {
 
         String email = user.getEmail();
         String jwt =tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,email));
+
+        // get users role
+        User user1 = userRepository.ByEmail(email);
+        Set<Role> roleName = user1.getRoles() ;
+
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,email,roleName));
     }
 
     // Register user Consumer
