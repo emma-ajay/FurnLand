@@ -29,4 +29,6 @@ public interface OrderedItemRepository extends JpaRepository<OrderedItem,Long> {
     @Query("UPDATE OrderedItem u SET  u.hasBeenDelivered = true WHERE u.orderedItemId =?1")
     void  confirmDeliveredOrderedItem(Long id);
 
+    @Query("SELECT u FROM OrderedItem u  WHERE u.userId =?1")
+    List<OrderedItem> getUsersOrders(Long userId);
 }

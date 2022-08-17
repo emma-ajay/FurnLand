@@ -2,6 +2,8 @@ package com.project.FurnLand.Repository;
 
 
 import com.project.FurnLand.Entity.Item;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,4 +20,7 @@ public interface ItemRepository extends JpaRepository <Item,Long > {
 
     @Query("SELECT u FROM Item u WHERE CONCAT(u.itemName, u.itemType, u.itemCategory, u.itemPrice) LIKE %?1%")
     List<Item> search(String keyword);
+
+    @Query(value = "SELECT * FROM Items",nativeQuery = true)
+    Page<Item> findAllItems (Pageable pageable);
 }

@@ -1,7 +1,9 @@
 package com.project.FurnLand.Controller;
 
+import com.project.FurnLand.Config.AppConstants;
 import com.project.FurnLand.DTO.Requests.ItemCreationRequest;
 import com.project.FurnLand.DTO.Requests.ItemUpdateRequest;
+import com.project.FurnLand.DTO.Response.PagedResponse;
 import com.project.FurnLand.Entity.Item;
 import com.project.FurnLand.Entity.SelectedItem;
 import com.project.FurnLand.Entity.UserCart;
@@ -47,6 +49,12 @@ public class ItemController {
         return itemService.searchItems(keyword);
     }
 
+    @GetMapping("/{page}/{size}")
+    public PagedResponse<Item> allItems(@PathVariable int page,
+                                        @PathVariable int size){
+        return itemService.allItems(page,size);
+    }
+
 
     @GetMapping(path = "/items/{id}")
         public Item getItemById(@PathVariable Long id) {
@@ -54,7 +62,7 @@ public class ItemController {
     }
 
     @GetMapping("/vendor/{id}")
-    public  ResponseEntity itemByVendor(@PathVariable Long id){
+    public  ResponseEntity<?> itemByVendor(@PathVariable Long id){
         return itemService.getItemsByVendor(id);
     }
 

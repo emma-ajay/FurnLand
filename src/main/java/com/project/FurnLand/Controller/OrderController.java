@@ -42,7 +42,7 @@ public class OrderController {
     @GetMapping(path = "/myOrders")
     public ResponseEntity<?> myOrders(@CurrentUser UserPrincipal currentUser) {
         Long userId = currentUser.getId();
-        return orderService.myOrders(userId);
+        return userService.userOrders(userId);
     }
 
 

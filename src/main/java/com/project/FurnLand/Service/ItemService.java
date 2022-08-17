@@ -1,15 +1,22 @@
 package com.project.FurnLand.Service;
 
 
+import com.project.FurnLand.Config.AppConstants;
 import com.project.FurnLand.DTO.Response.ApiResponse;
+import com.project.FurnLand.DTO.Response.PagedResponse;
 import com.project.FurnLand.Entity.Item;
 import com.project.FurnLand.Exceptions.BadRequestException;
 import com.project.FurnLand.Repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +29,22 @@ public class ItemService {
     public List <Item> getAllItems(){
         return  itemRepository.findAll();
 
+    }
+
+    public PagedResponse<Item> allItems(int page, int size){
+        validatePageNumberAndSize(page, size);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Item> items =itemRepository.findAllItems(pageable);
+        if(items.getTotalElements() == 0){
+            return new PagedResponse<>(Collections.emptyList(),items.getNumber(),
+                    items.getSize(),items.getTotalElements(),items.getTotalPages(),items.isLast());
+        }
+
+
+
+        return new PagedResponse<>(items.toList(),items.getNumber(),
+                items.getSize(),items.getTotalElements(),items.getTotalPages(),items.isLast());
     }
 
     //get a particular Item
@@ -90,5 +113,15 @@ public class ItemService {
         return itemRepository.search(keyword);
     }
 
+    // validate page number and size
+    private void validatePageNumberAndSize(int page, int size) {
+        if(page < 0) {
+            throw new BadRequestException("Page number cannot be less than zero.");
+        }
+
+        if(size > AppConstants.MAX_PAGE_SIZE) {
+            throw new BadRequestException("Page size must not be greater than " + AppConstants.MAX_PAGE_SIZE);
+        }
+    }
 
 }

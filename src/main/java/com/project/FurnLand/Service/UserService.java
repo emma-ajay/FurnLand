@@ -80,6 +80,13 @@ public class UserService {
     }
 
 
+    // a users orders
+    public ResponseEntity<?> userOrders(Long userId){
+        List<OrderedItem> orderedItemList = orderedItemRepository.getUsersOrders(userId);
+        return ResponseEntity.ok(orderedItemList);
+    }
+
+
     // Get vendors Ordered Items
     public ResponseEntity<?> vendorsOrders(Long userId){
         List <OrderedItem> orderedItemList = orderedItemRepository.getAllVendorOrders(userId);
