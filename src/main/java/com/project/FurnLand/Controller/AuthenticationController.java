@@ -4,6 +4,7 @@ import com.project.FurnLand.DTO.Requests.RegisterRequest;
 import com.project.FurnLand.DTO.Requests.SignInRequest;
 import com.project.FurnLand.DTO.Response.ApiResponse;
 import com.project.FurnLand.DTO.Response.JwtAuthenticationResponse;
+import com.project.FurnLand.DTO.Response.Profile;
 import com.project.FurnLand.Entity.*;
 import com.project.FurnLand.Exceptions.AppException;
 import com.project.FurnLand.Repository.CartRepository;
@@ -83,7 +84,9 @@ public class AuthenticationController {
         User user1 = userRepository.ByEmail(email);
         Set<Role> roleName = user1.getRoles() ;
 
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,email,roleName));
+        Profile profile = modelMapper.map(user1,Profile.class);
+
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,email,profile,roleName));
     }
 
     // Register user Consumer

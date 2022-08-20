@@ -145,5 +145,15 @@ public class UserService {
 
     }
 
+    public User updateUserImage (Long userId, String imageUrl){
+        User user = userRepository.getById(userId);
+        user.setId(user.getId());
+        user.setImage(imageUrl);
+
+        User rs = userRepository.save(user);
+        return rs;
+
+    }
+
 
 }

@@ -7,20 +7,25 @@ import com.project.FurnLand.DTO.Response.PagedResponse;
 import com.project.FurnLand.Entity.Item;
 import com.project.FurnLand.Entity.SelectedItem;
 import com.project.FurnLand.Entity.UserCart;
+import com.project.FurnLand.Exceptions.BadRequestException;
 import com.project.FurnLand.Repository.SelectedItemRepository;
 import com.project.FurnLand.Repository.UserCartRepository;
 import com.project.FurnLand.Security.CurrentUser;
 import com.project.FurnLand.Security.UserPrincipal;
+import com.project.FurnLand.Service.AzureBlobAdapter;
 import com.project.FurnLand.Service.ItemService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -28,6 +33,9 @@ import java.util.Optional;
 public class ItemController {
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    AzureBlobAdapter azureAdapter;
 
 
     @Autowired
@@ -112,6 +120,15 @@ public class ItemController {
        selectedItemRepository.save(selectedItem);
         return selectedItem;
     }
+
+    @PostMapping(path = "/upload" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public Item upload(@RequestPart(value = "itemPicture") MultipartFile itemPicture,@RequestParam(name = "itemId") Long itemId)  {
+        if(Objects.isNull(itemPicture)) throw new BadRequestException("Include a picture");
+        String name = azureAdapter.upload(itemPicture, "Product-Image");
+        Item item = itemService.updateItemImage(itemId,name);
+        return item;
+    }
+
 
 
 

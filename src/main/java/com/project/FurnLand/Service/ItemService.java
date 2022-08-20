@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -88,6 +89,18 @@ public class ItemService {
      itemRepository.save(item1);
      ResponseEntity response = ResponseEntity.ok(new ApiResponse(true,"Item updated",item1.getId(),"Item"));
      return response;
+    }
+
+    public Item updateItemImage (Long itemId, String imageName){
+
+        Item item = itemRepository.findItemById(itemId);
+        if(Objects.isNull(item)) throw new BadRequestException("Item doesn't exist");
+
+        item.setId(itemId);
+        item.setImageUrl(imageName);
+
+        Item rs = itemRepository.save(item);
+        return  rs;
     }
 
 

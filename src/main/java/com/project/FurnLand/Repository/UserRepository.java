@@ -20,5 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u  INNER JOIN  Role r ON r.id =?1 ")
     List<User> getUserByRole(Long id);
 
+    @Query("SELECT u FROM User u WHERE u.id =?1")
+    User getById (Long id);
+
 
 }
