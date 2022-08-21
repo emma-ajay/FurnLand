@@ -8,9 +8,14 @@ import java.util.List;
 @Table (name = "Items")
 public class Item {
     @Id
+    @SequenceGenerator(
+            name = "item_sequence",
+            sequenceName = "item_sequence",
+            allocationSize = 1
+    )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "ItemGen "
+            generator = "item_sequence"
     )
     @Column(name ="itemId")
     private Long id;
