@@ -9,14 +9,12 @@ public class RegisterRequest {
 
     private String phoneNumber;
 
-    private String image;
-
-    public RegisterRequest(String email, String password, String name, String phoneNumber, String image) {
+    public RegisterRequest(String email, String password, String name, String phoneNumber) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.image = image;
+
     }
 
     public String getEmail() {
@@ -51,11 +49,4 @@ public class RegisterRequest {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 }

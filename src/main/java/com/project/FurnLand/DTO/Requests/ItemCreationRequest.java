@@ -14,19 +14,16 @@ public class ItemCreationRequest {
 
     private String itemDescription;
 
-    private String imageUrl;
-
     private String deliveryEstimation;
 
 
-    public ItemCreationRequest( String itemName, String itemType, String itemCategory, String itemPrice, String itemDescription, String imageUrl, String deliveryEstimation) {
+    public ItemCreationRequest( String itemName, String itemType, String itemCategory, String itemPrice, String itemDescription, String deliveryEstimation) {
 
         this.itemName = itemName;
         this.itemType = itemType;
         this.itemCategory = itemCategory;
         this.itemPrice = itemPrice;
         this.itemDescription = itemDescription;
-        this.imageUrl = imageUrl;
         this.deliveryEstimation = deliveryEstimation;
     }
 
@@ -72,13 +69,6 @@ public class ItemCreationRequest {
         this.itemDescription = itemDescription;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 
     public String getDeliveryEstimation() {
         return deliveryEstimation;
