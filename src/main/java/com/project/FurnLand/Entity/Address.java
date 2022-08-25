@@ -17,6 +17,8 @@ public class Address {
 
     private String country;
 
+    private Boolean isDefault;
+
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "userId",nullable=false,insertable = false,updatable = false)
@@ -29,6 +31,13 @@ public class Address {
         this.userId = userId;
         this.address = address;
         this.country = country;
+    }
+
+    public Address(Long userId, String address, String country, Boolean isDefault) {
+        this.userId = userId;
+        this.address = address;
+        this.country = country;
+        this.isDefault = isDefault;
     }
 
     public Long getId() {
@@ -61,5 +70,13 @@ public class Address {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean aDefault) {
+        isDefault = aDefault;
     }
 }

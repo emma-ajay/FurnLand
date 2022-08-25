@@ -9,6 +9,7 @@ import com.project.FurnLand.Repository.OrderedItemRepository;
 import com.project.FurnLand.Repository.UserRepository;
 import com.project.FurnLand.Security.CurrentUser;
 import com.project.FurnLand.Security.UserPrincipal;
+import com.project.FurnLand.Service.AddressService;
 import com.project.FurnLand.Service.AzureBlobAdapter;
 import com.project.FurnLand.Service.OrderService;
 import com.project.FurnLand.Service.UserService;
@@ -39,10 +40,7 @@ public class UserController {
     ModelMapper modelMapper;
 
     @Autowired
-    CartRepository cartRepository;
-
-    @Autowired
-    OrderService orderService;
+    AddressService addressService;
 
     @Autowired
     AzureBlobAdapter azureAdapter;
@@ -74,12 +72,18 @@ public class UserController {
         return userService.getUserAddresses(userId);
     }
 
-//    @PreAuthorize("hasRole('USER')")
-//    @DeleteMapping(path = "/currentUser/deleteAddress/{id}")
-//    public ResponseEntity<?> deleteAddress(@CurrentUser UserPrincipal currentUser,@PathVariable Long id){
-//        Long userId = currentUser.getSelectedItemId();
-//        return userService.deleteUserAddress(id,userId);
-//    }
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(path = "/{id}/makeDefault")
+    public Address makeAddressDefault(@CurrentUser UserPrincipal currentUser, @PathVariable Long id){
+        Long userId = currentUser.getId();
+        return addressService.makeAddressDefault(id,userId);
+    }
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping(path = "/{id}/address")
+    public ResponseEntity<?> deleteAddress(@CurrentUser UserPrincipal currentUser,@PathVariable Long id){
+        Long userId = currentUser.getId();
+        return userService.deleteUserAddress(id,userId);
+    }
 
 
     @PreAuthorize("hasRole('USER')")

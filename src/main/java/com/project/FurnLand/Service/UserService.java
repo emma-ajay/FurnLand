@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,6 +39,16 @@ public class UserService {
     }
     public ResponseEntity<?> createAddress( Address address){
 
+        Long userId = address.getUserId();
+        List<Address> addressList = addressRepository.getAddressByUserId(userId);
+
+        if(addressList.size()==0){
+            address.setDefault(Boolean.TRUE);
+        }
+        else {
+            address.setDefault(Boolean.FALSE);
+        }
+
         Address address1 = addressRepository.save(address);
         ResponseEntity response = ResponseEntity.ok(new ApiResponse(true,"new address added",address1.getId(),"address"));
         return response;
@@ -53,16 +64,19 @@ public class UserService {
 
         Address address = addressRepository.findById(addressId).orElseThrow(()-> new BadRequestException("address doesn't exist"));
         Long user = address.getUserId();
-        if(userId != user){
+
+        if(!Objects.equals(userId, user)){
             throw  new BadRequestException("This address doesn't belong to you");
+
         }
         try{
             addressRepository.deleteById(addressId);
+            return ResponseEntity.ok("address deleted");
         }
         catch (BadRequestException ex){
             ex.getMessage();
         }
-        return ResponseEntity.ok("address deleted");
+       return  null;
     }
 
 
