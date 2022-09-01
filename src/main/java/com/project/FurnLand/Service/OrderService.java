@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.Access;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -102,5 +103,22 @@ public class OrderService {
             throw new BadRequestException("Ordered Item doesn't exist");
         }
         return  orderedItem;
+    }
+
+    // remove item from cart
+    public ResponseEntity<?> removeFromCart(Long userId , Long selectedItemId){
+
+        SelectedItem selectedItem = selectedItemRepository.findById(selectedItemId).orElseThrow(()-> new BadRequestException("Item not in cart"));
+        Long user =selectedItem.getUserId();
+
+        if(!Objects.equals(user,userId)) throw  new BadRequestException("not your cart ");
+
+        try {
+           selectedItemRepository.deleteById(selectedItem.getSelectedItemId());
+       }
+       catch (Exception ex){
+           ex.getMessage();
+       }
+       return  ResponseEntity.ok(new ApiResponse(true,"removed from cart",selectedItemId,"selected item in cart"));
     }
 }

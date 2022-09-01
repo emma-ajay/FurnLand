@@ -23,4 +23,7 @@ public interface ItemRepository extends JpaRepository <Item,Long > {
 
     @Query(value = "SELECT * FROM Items",nativeQuery = true)
     Page<Item> findAllItems (Pageable pageable);
+
+    @Query("SELECT u FROM Item u WHERE CONCAT(u.itemName, u.itemType, u.itemCategory, u.itemPrice) LIKE %?1%")
+    Page<Item> query(Pageable pageable, String keyword);
 }

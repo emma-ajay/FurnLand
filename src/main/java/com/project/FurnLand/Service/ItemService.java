@@ -126,6 +126,24 @@ public class ItemService {
         return itemRepository.search(keyword);
     }
 
+    // return items searched in pages
+    public PagedResponse<Item> search(int page, int size, String keyword){
+
+        validatePageNumberAndSize(page, size);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Item> items =itemRepository.query(pageable,keyword);
+        if(items.getTotalElements() == 0){
+            return new PagedResponse<>(Collections.emptyList(),items.getNumber(),
+                    items.getSize(),items.getTotalElements(),items.getTotalPages(),items.isLast());
+        }
+
+
+
+        return new PagedResponse<>(items.toList(),items.getNumber(),
+                items.getSize(),items.getTotalElements(),items.getTotalPages(),items.isLast());
+    }
+
     // validate page number and size
     private void validatePageNumberAndSize(int page, int size) {
         if(page < 0) {

@@ -14,6 +14,7 @@ import com.project.FurnLand.Security.CurrentUser;
 import com.project.FurnLand.Security.UserPrincipal;
 import com.project.FurnLand.Service.AzureBlobAdapter;
 import com.project.FurnLand.Service.ItemService;
+import com.project.FurnLand.Service.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -47,6 +48,9 @@ public class ItemController {
     @Autowired
     UserCartRepository userCartRepository;
 
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping(path = "/items")
     public List <Item> getAllItems(){
         return itemService.getAllItems();
@@ -55,6 +59,12 @@ public class ItemController {
     @GetMapping(path = "/search/{keyword}")
     public List <Item> searchItems(@PathVariable String keyword){
         return itemService.searchItems(keyword);
+    }
+
+    @GetMapping(path ="/{page}/{size}/")
+    public PagedResponse<Item> allItems(@PathVariable int page,
+                                        @PathVariable int size, @RequestParam(value = "q") String q){
+        return  itemService.search(page,size,q);
     }
 
     @GetMapping("/{page}/{size}")

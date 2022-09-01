@@ -76,6 +76,12 @@ public class OrderController {
         Long userId = currentUser.getId();
         return  userService.updateHasBeenDelivered(userId,id);
 }
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping (path = "/remove/fromCart/{id}")
+    public ResponseEntity<?> remove(@CurrentUser UserPrincipal currentUser, @PathVariable Long id){
+        Long userId = currentUser.getId();
+        return orderService.removeFromCart(userId,id);
+    }
 
 
 }

@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @GetMapping(path = "/{id}/makeDefault")
+    @PostMapping(path = "/{id}/makeDefault")
     public Address makeAddressDefault(@CurrentUser UserPrincipal currentUser, @PathVariable Long id){
         Long userId = currentUser.getId();
         return addressService.makeAddressDefault(id,userId);
