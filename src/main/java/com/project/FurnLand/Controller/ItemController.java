@@ -68,7 +68,7 @@ public class ItemController {
     }
 
     @GetMapping("/{page}/{size}")
-    public PagedResponse<Item> allItems(@PathVariable int page,
+    public PagedResponse<Item> allItems(@PathVariable() int page ,
                                         @PathVariable int size){
         return itemService.allItems(page,size);
     }
